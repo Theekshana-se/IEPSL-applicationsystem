@@ -23,9 +23,15 @@ export const login = async (email, password, userType) => {
 export const logout = async () => {
     try {
         await api.post('/auth/logout');
-    } finally {
         localStorage.removeItem('token');
         localStorage.removeItem('user');
+        window.location.href = '/'; // Redirect to landing page
+        return { success: true };
+    } catch (error) {
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+        window.location.href = '/'; // Redirect to landing page even on error
+        return { success: false, message: error.response?.data?.message || 'Logout failed' };
     }
 };
 

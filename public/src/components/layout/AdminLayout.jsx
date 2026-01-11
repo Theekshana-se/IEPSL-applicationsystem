@@ -10,6 +10,7 @@ import {
     Menu,
     X
 } from 'lucide-react';
+import logo from '../../assets/IEPSL.png';
 
 export default function AdminLayout() {
     const navigate = useNavigate();
@@ -18,7 +19,6 @@ export default function AdminLayout() {
 
     const handleLogout = async () => {
         await logout();
-        navigate('/login');
     };
 
     const menuItems = [
@@ -42,7 +42,13 @@ export default function AdminLayout() {
                         >
                             {sidebarOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
                         </button>
-                        <h1 className="text-2xl font-bold text-primary-600">IEPSL Admin Portal</h1>
+                        <div className="flex items-center gap-3">
+                            <img src={logo} alt="IEPSL Logo" className="h-10 w-auto" />
+                            <div>
+                                <h1 className="text-xl font-bold text-primary-600">IEPSL Admin Portal</h1>
+                                <p className="text-xs text-gray-600">Institute of Environmental Professionals</p>
+                            </div>
+                        </div>
                     </div>
 
                     <button
@@ -59,12 +65,12 @@ export default function AdminLayout() {
                 {/* Sidebar */}
                 <aside
                     className={`
-            ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}
-            fixed lg:sticky lg:translate-x-0 top-[73px] left-0 z-20
-            w-64 h-[calc(100vh-73px)] bg-white border-r border-gray-200
-            transition-transform duration-300 ease-in-out
-            overflow-y-auto scrollbar-thin
-          `}
+                        ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}
+                        fixed lg:sticky lg:translate-x-0 top-[73px] left-0 z-20
+                        w-64 h-[calc(100vh-73px)] bg-white border-r border-gray-200
+                        transition-transform duration-300 ease-in-out
+                        overflow-y-auto scrollbar-thin
+                    `}
                 >
                     <nav className="p-4 space-y-2">
                         {menuItems.map((item) => {
@@ -74,12 +80,12 @@ export default function AdminLayout() {
                                     key={item.path}
                                     to={item.path}
                                     className={`
-                    flex items-center gap-3 px-4 py-3 rounded-lg transition-colors
-                    ${isActive(item.path)
+                                        flex items-center gap-3 px-4 py-3 rounded-lg transition-colors
+                                        ${isActive(item.path)
                                             ? 'bg-primary-600 text-white'
                                             : 'text-gray-700 hover:bg-gray-100'
                                         }
-                  `}
+                                    `}
                                 >
                                     <Icon className="w-5 h-5" />
                                     <span className="font-medium">{item.label}</span>

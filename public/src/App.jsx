@@ -1,5 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import LandingPage from './pages/LandingPage';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import RegistrationFlow from './pages/RegistrationFlow';
@@ -18,13 +19,21 @@ import MemberProfile from './pages/member/MemberProfile';
 import RegistrationDetails from './pages/member/RegistrationDetails';
 import MembershipCard from './pages/member/MembershipCard';
 
+// Public Pages
+import AboutPage from './pages/AboutPage';
+import WorkPage from './pages/WorkPage';
+import InfoPage from './pages/InfoPage';
+
 import './index.css';
 
 function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Navigate to="/login" replace />} />
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/about" element={<AboutPage />} />
+        <Route path="/work" element={<WorkPage />} />
+        <Route path="/info" element={<InfoPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/registration/*" element={<RegistrationFlow />} />

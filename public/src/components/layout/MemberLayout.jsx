@@ -11,6 +11,7 @@ import {
     Menu,
     X
 } from 'lucide-react';
+import logo from '../../assets/IEPSL.png';
 
 export default function MemberLayout() {
     const navigate = useNavigate();
@@ -19,7 +20,6 @@ export default function MemberLayout() {
 
     const handleLogout = async () => {
         await logout();
-        navigate('/login');
     };
 
     const menuItems = [
@@ -44,7 +44,13 @@ export default function MemberLayout() {
                         >
                             {sidebarOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
                         </button>
-                        <h1 className="text-2xl font-bold text-primary-600">IEPSL Member Portal</h1>
+                        <div className="flex items-center gap-3">
+                            <img src={logo} alt="IEPSL Logo" className="h-10 w-auto" />
+                            <div>
+                                <h1 className="text-xl font-bold text-primary-600">IEPSL Member Portal</h1>
+                                <p className="text-xs text-gray-600">Institute of Environmental Professionals</p>
+                            </div>
+                        </div>
                     </div>
 
                     <button
