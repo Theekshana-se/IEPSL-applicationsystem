@@ -27,7 +27,8 @@ export default function LoginPage() {
         }
     });
 
-    const onSubmit = async (data) => {
+    // This is the function that react-hook-form's handleSubmit will call with validated data
+    const onFormSubmit = async (data) => {
         setIsLoading(true);
         setError('');
 
@@ -35,23 +36,32 @@ export default function LoginPage() {
             const response = await login(data.email, data.password, data.userType);
 
             if (response.success) {
+                // Store user data
+                localStorage.setItem('token', response.data.token);
+                localStorage.setItem('user', JSON.stringify(response.data.user));
+
                 const user = response.data.user;
 
                 // Redirect based on user type and status
                 if (user.userType === 'admin') {
                     navigate('/admin/dashboard');
                 } else if (user.userType === 'member') {
-                    if (user.currentStep < 8) {
-                        // Continue registration
-                        navigate(`/registration/step${user.currentStep}`);
+                    // For members, check registration progress
+                    if (user.currentStep && user.currentStep < 8) {
+                        // If registration not complete, redirect to next step
+                        navigate(`/registration/step${user.currentStep + 1}`);
                     } else {
-                        // Go to member dashboard
+                        // Registration complete, go to member dashboard
                         navigate('/member/dashboard');
                     }
                 }
+            } else {
+                setError(response.message || 'Login failed');
             }
         } catch (err) {
-            setError(err.message || 'Login failed. Please check your credentials.');
+            // The axios interceptor wraps the error message in err.message
+            const errorMessage = err.message || err.response?.data?.message || 'Login failed. Please check your credentials.';
+            setError(errorMessage);
         } finally {
             setIsLoading(false);
         }
@@ -86,7 +96,7 @@ export default function LoginPage() {
                             </div>
                         )}
 
-                        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+                        <form onSubmit={handleSubmit(onFormSubmit)} className="space-y-6">
                             {/* User Type */}
                             <div>
                                 <label className="label">Login As</label>

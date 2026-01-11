@@ -48,14 +48,24 @@ export default function RegisterPage() {
 
         try {
             const { confirmPassword, ...registrationData } = data;
+            console.log('Sending registration data:', registrationData);
+
             const response = await registerMember(registrationData);
+            console.log('Registration response:', response);
 
             if (response.success) {
-                // Navigate to registration flow
-                navigate('/registration/step2');
+                // Show success message
+                alert('Registration started successfully! Please login to continue.');
+
+                // Redirect to login page
+                navigate('/login');
+            } else {
+                setError(response.message || 'Registration failed');
             }
         } catch (err) {
-            setError(err.message || 'Registration failed. Please try again.');
+            // The axios interceptor wraps the error message in err.message
+            const errorMessage = err.message || err.response?.data?.message || 'An error occurred during registration';
+            setError(errorMessage);
         } finally {
             setIsLoading(false);
         }

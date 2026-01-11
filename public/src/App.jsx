@@ -24,22 +24,34 @@ import AboutPage from './pages/AboutPage';
 import WorkPage from './pages/WorkPage';
 import InfoPage from './pages/InfoPage';
 
+// Route Protection
+import { ProtectedRoute, PublicRoute, RegistrationRoute } from './components/ProtectedRoute';
+
 import './index.css';
 
 function App() {
   return (
     <Router>
       <Routes>
+        {/* Public Routes */}
         <Route path="/" element={<LandingPage />} />
         <Route path="/about" element={<AboutPage />} />
         <Route path="/work" element={<WorkPage />} />
         <Route path="/info" element={<InfoPage />} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/register" element={<RegisterPage />} />
-        <Route path="/registration/*" element={<RegistrationFlow />} />
 
-        {/* Admin Routes */}
-        <Route path="/admin" element={<AdminLayout />}>
+        {/* Auth Routes - Redirect if already logged in */}
+        <Route path="/login" element={<PublicRoute><LoginPage /></PublicRoute>} />
+        <Route path="/register" element={<PublicRoute><RegisterPage /></PublicRoute>} />
+
+        {/* Registration Flow - Protected and Sequential */}
+        <Route path="/registration/*" element={
+          <ProtectedRoute>
+            <RegistrationFlow />
+          </ProtectedRoute>
+        } />
+
+        {/* Admin Routes - Protected */}
+        <Route path="/admin" element={<ProtectedRoute><AdminLayout /></ProtectedRoute>}>
           <Route index element={<Navigate to="/admin/dashboard" replace />} />
           <Route path="dashboard" element={<AdminDashboard />} />
           <Route path="pending" element={<PendingRegistrations />} />
@@ -47,8 +59,8 @@ function App() {
           <Route path="statistics" element={<Statistics />} />
         </Route>
 
-        {/* Member Routes */}
-        <Route path="/member" element={<MemberLayout />}>
+        {/* Member Routes - Protected */}
+        <Route path="/member" element={<ProtectedRoute><MemberLayout /></ProtectedRoute>}>
           <Route index element={<Navigate to="/member/dashboard" replace />} />
           <Route path="dashboard" element={<MemberDashboard />} />
           <Route path="profile" element={<MemberProfile />} />
@@ -56,6 +68,9 @@ function App() {
           <Route path="membership-card" element={<MembershipCard />} />
           <Route path="notifications" element={<MemberDashboard />} />
         </Route>
+
+        {/* Catch all - redirect to home */}
+        <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </Router>
   );
