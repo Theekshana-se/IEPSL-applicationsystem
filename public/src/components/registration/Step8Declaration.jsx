@@ -37,9 +37,12 @@ export default function Step8Declaration({ onComplete }) {
                 setSuccess(true);
                 onComplete?.();
 
-                // Show success message for 3 seconds then redirect
+                // Clear localStorage to force fresh login after registration
+                // This prevents PublicRoute from redirecting back to registration
                 setTimeout(() => {
-                    navigate('/login');
+                    localStorage.removeItem('token');
+                    localStorage.removeItem('user');
+                    window.location.href = '/login';
                 }, 3000);
             }
         } catch (err) {
