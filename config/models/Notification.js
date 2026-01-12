@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const notificationSchema = new mongoose.Schema({
     recipientId: {
         type: mongoose.Schema.Types.ObjectId,
-        required: true
+        required: false  // Optional for admin-wide notifications
     },
     recipientType: {
         type: String,
