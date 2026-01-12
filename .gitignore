@@ -30,9 +30,6 @@ Thumbs.db
 
 # Uploads
 uploads/
-*.jpg
-*.jpeg
-*.png
 *.pdf
 *.doc
 *.docx
